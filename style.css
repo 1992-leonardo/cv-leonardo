@@ -1541,3 +1541,61 @@
 .close-button:hover {
   color: black;
 }
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.icon-box {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+.icon-box ion-icon,
+.icon-box img {
+    width: 24px;
+    height: 24px;
+    color: #333; /* cor padrão dos ícones */
+    filter: invert(20%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(95%) contrast(90%);
+}
+
+.contact-info {
+    font-family: inherit;
+    color: #333; /* cor padrão dos textos */
+}
+
+.contact-title {
+    font-weight: bold;
+    margin: 0;
+    font-size: 16px;
+}
+
+.contact-info address,
+.contact-info a {
+    font-size: 14px;
+    color: #333;
+    text-decoration: none;
+}
+
+.contact-info a:hover {
+    text-decoration: underline;
+}
+
+.contact-info a {
+  font-size: 14px;
+  color: white; /* ou a cor exata que aparece nos outros */
+  font-weight: 400;
+  text-decoration: none;
+  display: block;
+  opacity: 0.7; /* igual aos outros textos */
+}
+
+.contact-info a:hover {
+  opacity: 1;
+}
