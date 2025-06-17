@@ -7,7 +7,7 @@ const elementToggleFunc = function (elem) { elem.classList.toggle("active"); }
 const sidebar = document.querySelector("[data-sidebar]");
 const sidebarBtn = document.querySelector("[data-sidebar-btn]");
 
-sidebarBtn.addEventListener("click", function() {elementToggleFunc(sidebar); })
+sidebarBtn.addEventListener("click", function () { elementToggleFunc(sidebar); })
 
 //Activating Modal-testimonial
 
@@ -48,10 +48,10 @@ const selectItems = document.querySelectorAll('[data-select-item]');
 const selectValue = document.querySelector('[data-select-value]');
 const filterBtn = document.querySelectorAll('[data-filter-btn]');
 
-select.addEventListener('click', function () {elementToggleFunc(this); });
+select.addEventListener('click', function () { elementToggleFunc(this); });
 
-for(let i = 0; i < selectItems.length; i++) {
-    selectItems[i].addEventListener('click', function() {
+for (let i = 0; i < selectItems.length; i++) {
+    selectItems[i].addEventListener('click', function () {
 
         let selectedValue = this.innerText.toLowerCase();
         selectValue.innerText = this.innerText;
@@ -64,8 +64,8 @@ for(let i = 0; i < selectItems.length; i++) {
 const filterItems = document.querySelectorAll('[data-filter-item]');
 
 const filterFunc = function (selectedValue) {
-    for(let i = 0; i < filterItems.length; i++) {
-        if(selectedValue == "all") {
+    for (let i = 0; i < filterItems.length; i++) {
+        if (selectedValue == "all") {
             filterItems[i].classList.add('active');
         } else if (selectedValue == filterItems[i].dataset.category) {
             filterItems[i].classList.add('active');
@@ -80,8 +80,8 @@ const filterFunc = function (selectedValue) {
 let lastClickedBtn = filterBtn[0];
 
 for (let i = 0; i < filterBtn.length; i++) {
-    
-    filterBtn[i].addEventListener('click', function() {
+
+    filterBtn[i].addEventListener('click', function () {
 
         let selectedValue = this.innerText.toLowerCase();
         selectValue.innerText = this.innerText;
@@ -100,11 +100,11 @@ const form = document.querySelector('[data-form]');
 const formInputs = document.querySelectorAll('[data-form-input]');
 const formBtn = document.querySelector('[data-form-btn]');
 
-for(let i = 0; i < formInputs.length; i++) {
+for (let i = 0; i < formInputs.length; i++) {
     formInputs[i].addEventListener('input', function () {
-        if(form.checkValidity()) {
+        if (form.checkValidity()) {
             formBtn.removeAttribute('disabled');
-        } else { 
+        } else {
             formBtn.setAttribute('disabled', '');
         }
     })
@@ -115,25 +115,48 @@ for(let i = 0; i < formInputs.length; i++) {
 const navigationLinks = document.querySelectorAll('[data-nav-link]');
 const pages = document.querySelectorAll('[data-page]');
 
-for(let i = 0; i < navigationLinks.length; i++) {
-    navigationLinks[i].addEventListener('click', function() {
-        
-        for(let i = 0; i < pages.length; i++) {
-            if(this.innerHTML.toLowerCase() == pages[i].dataset.page) {
+for (let i = 0; i < navigationLinks.length; i++) {
+    navigationLinks[i].addEventListener('click', function () {
+
+        for (let i = 0; i < pages.length; i++) {
+            if (this.innerHTML.toLowerCase() == pages[i].dataset.page) {
                 pages[i].classList.add('active');
                 navigationLinks[i].classList.add('active');
                 window.scrollTo(0, 0);
             } else {
                 pages[i].classList.remove('active');
-                navigationLinks[i]. classList.remove('active');
+                navigationLinks[i].classList.remove('active');
             }
         }
     });
 }
 
+/*
+document.querySelectorAll('.project-item').forEach(item => {
+    item.addEventListener('click', function (e) {
+        e.preventDefault(); // evita scroll para "#" do link
+
+        const imgSrc = this.querySelector('img').src;
+        const title = this.querySelector('.project-title').textContent;
+        const description = this.querySelectorAll('.project-category')[0].textContent;
+
+        document.getElementById('modal-img').src = imgSrc;
+        document.getElementById('modal-title').textContent = title;
+        document.getElementById('modal-description').textContent = description;
+
+        document.getElementById('project-modal').style.display = 'block';
+    });
+});
+*/
+
 document.querySelectorAll('.project-item').forEach(item => {
   item.addEventListener('click', function(e) {
-    e.preventDefault(); // evita scroll para "#" do link
+    // ✅ Impede que clique no link dentro do título abra o modal
+    if (e.target.closest('.project-link')) {
+      return; // deixa o link funcionar normalmente
+    }
+
+    e.preventDefault();
 
     const imgSrc = this.querySelector('img').src;
     const title = this.querySelector('.project-title').textContent;
@@ -147,14 +170,41 @@ document.querySelectorAll('.project-item').forEach(item => {
   });
 });
 
+
 document.querySelectorAll('.close-button').forEach(btn => {
-  btn.addEventListener('click', function() {
-    document.getElementById('project-modal').style.display = 'none';
-  });
+    btn.addEventListener('click', function () {
+        document.getElementById('project-modal').style.display = 'none';
+    });
 });
 
-window.addEventListener('click', function(event) {
-  if (event.target === document.getElementById('project-modal')) {
-    document.getElementById('project-modal').style.display = 'none';
-  }
+window.addEventListener('click', function (event) {
+    if (event.target === document.getElementById('project-modal')) {
+        document.getElementById('project-modal').style.display = 'none';
+    }
+});
+
+document.querySelectorAll('[data-filter-btn]').forEach(btn => {
+    btn.addEventListener('click', function () {
+        // Atualiza visualmente o botão ativo
+        document.querySelectorAll('[data-filter-btn]').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+
+        const selectedCategory = this.textContent.toLowerCase().trim();
+
+        document.querySelectorAll('[data-filter-item]').forEach(item => {
+            const itemCategory = item.getAttribute('data-category').toLowerCase();
+
+            // Se a categoria for "Todos", mostra tudo
+            if (selectedCategory === 'todos') {
+                item.classList.add('active');
+            } else {
+                // Mostra só os itens que combinam
+                if (itemCategory === selectedCategory) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            }
+        });
+    });
 });
